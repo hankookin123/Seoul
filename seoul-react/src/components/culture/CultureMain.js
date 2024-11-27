@@ -4,7 +4,7 @@ import UseFetch from '../../hooks/useFetch';
 
 function CultureMain() {
     const test = UseFetch(`http://localhost:9002/seoul/culture/test`);
-    console.log(test);
+    console.log(`${test}`);
 
     return (
         <Map
