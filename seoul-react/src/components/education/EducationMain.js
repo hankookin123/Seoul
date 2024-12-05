@@ -1,9 +1,9 @@
-import styles from '../../assets/css/education/EduMain.module.css';
 import { useEffect, useState, useRef } from 'react';
 import { MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk"; // CustomOverlayMap 제거
 import SideTab from '../common/SideTab';
 import CommonMap from '../common/CommonMap';
 import axios from 'axios';
+import styles from '../../assets/css/education/EduMain.module.css';
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     if (totalPages <= 1) return null;
@@ -203,6 +203,66 @@ function EduSearchBox({ onSearch, selectedItems, setSelectedItems, error, query,
     );
 }
 
+function Infotab(kinderInfo) {
+
+    return <>
+        <div className={styles.infoBackground}>
+            <div className={styles.infoBaseBox}>
+                <div classNAme={styles.infoBaseTitle}>
+                    <h5>기본정보</h5>
+                    <ul className={styles.infoBaseUl}>
+                        <li className={styles.infoBaseLi}>
+                            <i>전화번호</i>
+                            <span>{kinderInfo.tel}</span>
+                        </li>
+                        <li className={styles.infoBaseLi}>
+                            <i>운영시간</i>
+                            <span>{kinderInfo.operating_hours}</span>
+                        </li>
+                        <li className={styles.infoBaseLi}>
+                            <i>대표자명</i>
+                            <span>{kinderInfo.hearder}</span>
+                        </li>
+                        <li className={styles.infoBaseLi}>
+                            <i>원장명</i>
+                            <span>{kinderInfo.director}</span>
+                        </li>
+                        <li className={styles.infoBaseLi}>
+                            <i>설립일</i>
+                            <span>{kinderInfo.birth}</span>
+                        </li>
+                        <li className={styles.infoBaseLi}>
+                            <i>개원일</i>
+                            <span>{kinderInfo.start}</span>
+                        </li>
+                        <li className={styles.infoBaseLi}>
+                            <i>관할기관</i>
+                            <span>{kinderInfo.office_education}</span>
+                        </li>
+                        <li className={styles.infoBaseLi}>
+                            <i>주소</i>
+                            <span>{kinderInfo.address}</span>
+                        </li>
+                        <li className={styles.infoBaseLi}>
+                            <i>홈페이지</i>
+                            <span>{kinderInfo.home_page}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div classNAme={styles.infoBaseTitle}>
+                    <h5>통학차량</h5>
+                    <span>{kinderInfo.car_check}</span>
+                </div>
+                <div classNAme={styles.infoBaseTitle}>
+                    <h5>제공서비스</h5>
+                    <ul>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </>
+}
 
 function EducationMain() {
     const mapRef = useRef(null);
@@ -212,6 +272,8 @@ function EducationMain() {
 
     const [query, setQuery] = useState("");
     const [areas, setAreas] = useState([]);
+    const [error, setError] = useState("");
+    const [page, setPage] = useState(1);
     const [results, setResults] = useState({
         items: [],
         total: 0,
@@ -219,9 +281,8 @@ function EducationMain() {
             totPage: 1
         }
     });
-    const [error, setError] = useState("");
-    const [page, setPage] = useState(1);
-    // selectedMarkerIndex 상태 제거
+    const [kinderInfo, setKinderInfo] = useState([])
+    
 
     const fetchData = async (query, areas, page = 1) => {
         try {
@@ -236,7 +297,6 @@ function EducationMain() {
             
             // 마커 생성
             const multiMarker = response.data.items
-            .filter(item => item.x_coordinate && item.y_coordinate)
             .map((item, index) => ({
                 position: {
                     lat: parseFloat(item.y_coordinate),
@@ -275,34 +335,75 @@ function EducationMain() {
         }
     }, [query, areas, page]);
 
+    const handleMouseEnter = (index) => {
+        const marker = document.querySelector(`.marker-container-${index}`);
+        if (marker) {
+            marker.style.zIndex = 10000; // 가장 높은 값으로 설정
+        }
+    };
+    
+    const handleMouseLeave = (index) => {
+        const marker = document.querySelector(`.marker-container-${index}`);
+        if (marker) {
+            marker.style.zIndex = 1; // 기본값으로 복구
+        }
+    };
+    const kinderinfo = async (marker) => {
+        try {
+            const response = await axios.get('http://localhost:9002/seoul/education/eduKinderInfo',{
+                params: {
+                    kinderName: marker.content,
+                    kinderAddress: marker.category,
+                },
+            });
+            setKinderInfo(response.data);
+            setError("");
+        } catch (err) {
+            console.error("데이터 로드 오류:", err);
+            setError("데이터 불러오기 중 오류 발생");
+        }
+    }
+    
+
     return (
         <div className={styles.educationContainer}>
             <CommonMap 
                 setMap={(map) => { mapRef.current = map; }} 
                 mapLevel={4}
                 // onClick 제거 (오버레이 관련)
+                
             >
                 {markers.map((marker, index) => (
-                    <div key={`marker-container-${index}`}>
+                    <div
+                        key={`marker-container-${index}`}
+                        onMouseEnter={() => handleMouseEnter(index)}
+                        onMouseLeave={() => handleMouseLeave(index)}
+                        className={`${styles.markerContainer} marker-container-${index}`}
+                    >
                     <MapMarker
                         key={`marker-${index}`}
-                        className={`marker-${index}`}
+                        className={styles.markerSet}
                         position={marker.position}
-                        // clickable={true}
+                        clickable={true}
+                    />
+                    <CustomOverlayMap
+                        className={styles.customO}
+                        position={marker.position}
                     >
-                        {/* 필요시 툴팁이나 간단한 정보 표시를 위해 MapMarker 내부에 내용 추가 가능 */}
-                        
                         <div
-                            key={`markerInfo-${index}`}
                             className={styles.markerInfo}
+                            onClick={() => kinderinfo(marker)}
                         >
                             <h4>{marker.content}</h4>
                             <p>{marker.category}</p>
                         </div>
-                    </MapMarker>
+                    </CustomOverlayMap>
                 </div>
                 ))}
             </CommonMap>
+            <Infotab
+                kinderInfo={kinderInfo}
+            />
             <SideTab>
                 <div className={styles.educationTab}>
                     {educationCategories.map((category, index) => (

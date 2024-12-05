@@ -29,4 +29,13 @@ public class EduController {
 			EduSearchVO searchVO){
 		return kindergartenService.kindergartenInfo(request,searchVO);
 	}
+	
+	@GetMapping("/eduKinderInfo")
+	public PageInfoDto<KindergartenNameDto> eduKinderInfo(
+			HttpServletRequest request,
+			EduSearchVO searchVO){
+		return kindergartenService.kindergartenInfo(request,searchVO);
+	}
+	
+	
 }
