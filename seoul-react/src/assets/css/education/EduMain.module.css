@@ -93,12 +93,22 @@
     cursor: pointer;
 }
 
-
 .searchBox{
     height: 50px;
     width:100%;
     margin:10px 0;
     padding: 0 5px;
+    align-items: center;
+}
+.searchLine{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+.searchBtn{
+    width: 40px;
+    height: 30px;
 }
 .searchBox select,
 .searchBox input[type="text"] {
@@ -141,16 +151,28 @@
     padding: 0 0 10px 0;
 }
 
-.resultItem{
-    cursor: pointer;
-    margin: 10px 0 0 10px;
-    list-style-type: none;
+.resultItem {
+    align-items: center; /* 세로(수직) 방향 가운데 정렬 */
+    padding: 10px 0; /* 리스트 아이템 간 위아래 여백 추가 */
+    position: relative; /* 위치 조정 가능하도록 설정 */
+    list-style-type:none ;
 }
+.resultItem p{
+    font-size: 0.8em;
+}
+.resultItem::after {
+    content: ""; /* 가상 요소 생성 */
+    position: absolute; /* 부모를 기준으로 위치 지정 */
+    bottom: 0; /* 내용물에서 3px 아래로 선 배치 */
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid #ddd; /* 수평선 스타일 */
+}
+
 .footPage {
     display: flex; /* 수평 정렬 */
     justify-content: center; /* 중앙 정렬 */
     align-items: center; /* 세로 정렬 */
-    margin-top: 20px; /* 버튼과 다른 콘텐츠 간 간격 */
 }
 
 .pagination {
@@ -159,19 +181,27 @@
     display: flex;
     justify-content: center;
     gap: 1rem;
-  
+
     > * {
-      cursor: pointer;
+        cursor: pointer;
     }
-  }
-  
-  .pagination__link {
+}
+
+.pagination__link {
     transition: all 0.25s;
     padding: 0.2rem 0.6rem;
     border-radius: 0.3rem;
-  }
-  
-  .pagination__link__active {
+}
+
+.pagination__link__active {
     background-color: #bbb;
     color: #fefefe;
-  }
+}
+.markerInfo p{
+    font-size: 0.8em;
+    overflow:hidden;
+    height:auto;
+}
+.marker{
+    height: 500px;
+}

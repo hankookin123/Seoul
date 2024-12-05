@@ -1,11 +1,10 @@
 import styles from '../../assets/css/education/EduMain.module.css';
 import { useEffect, useState, useRef } from 'react';
-import { MapMarker } from "react-kakao-maps-sdk"; // CustomOverlayMap 제거
+import { MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk"; // CustomOverlayMap 제거
 import SideTab from '../common/SideTab';
 import CommonMap from '../common/CommonMap';
 import axios from 'axios';
 
-// Pagination 컴포넌트 (변경 없음)
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     if (totalPages <= 1) return null;
 
@@ -73,12 +72,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     );
 };
 
-// KindergartenList 컴포넌트 (변경 없음)
-function KindergartenList({ results, error, page, setPage, totalPages }) {
+function KindergartenList({ results, error, page, setPage, totalPages, fetchData, query, areas }) {
 
     // 페이지 변경 핸들러
     const handlePageChange = (newPage) => {
         setPage(newPage);
+        fetchData(query, areas, newPage);
     };
 
     return (
@@ -110,8 +109,7 @@ function KindergartenList({ results, error, page, setPage, totalPages }) {
     );
 }
 
-// EduSearchBox 컴포넌트 (변경 없음)
-function EduSearchBox({ onSearch, selectedItems, setSelectedItems, error, query, setQuery }){
+function EduSearchBox({ onSearch, selectedItems, setSelectedItems, error, query, setQuery, setResults, setError }){
 
     const options = [
         "강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구",
@@ -138,7 +136,21 @@ function EduSearchBox({ onSearch, selectedItems, setSelectedItems, error, query,
     const handleRemove = (item) => {
         const updatedItems = selectedItems.filter((selected) => selected !== item);
         setSelectedItems(updatedItems);
-        onSearch(query, updatedItems); // 선택된 지역이 변경되었으므로 검색 결과 갱신
+        if (updatedItems.length === 0) {
+            // 선택된 지역이 없을 때 결과 초기화 및 에러 메시지 설정
+            setResults({
+                items: [],
+                total: 0,
+                searchVO: {
+                    totPage: 1,
+                },
+            });
+            setError("지역선택 또는 검색어를 입력하세요.");
+        } else if (query !== "") {
+            // 남아있는 지역이 있고 검색어가 존재할 때 검색 결과 갱신
+            onSearch(query, updatedItems);
+            setError(""); // 에러 메시지 초기화
+        }
     };
     
     const handleSubmit = (event) => {
@@ -152,24 +164,26 @@ function EduSearchBox({ onSearch, selectedItems, setSelectedItems, error, query,
 
     return (
         <div className={styles.searchBox}>
-            <form onSubmit={handleSubmit}>
-                <select onChange={handleSelect} defaultValue="">
-                    <option value="" disabled>지역선택</option>
-                    {options.map((option) => (
-                        <option key={option} value={option}>{option}</option>
-                    ))}
-                </select>
-                <input
-                    type="text"
-                    className={styles.searchInput}
-                    name="searchQuery"
-                    id="searchQuery"
-                    placeholder="유치원 검색"
-                    value={query}
-                    onChange={handleQueryChange}
-                />
-                <input type="submit" value="검색" />
-            </form>
+            <div className={styles.searchLine}>
+                <form onSubmit={handleSubmit}>
+                    <select onChange={handleSelect} value="">
+                        <option value="" disabled>지역선택</option>
+                        {options.map((option) => (
+                            <option key={option} value={option}>{option}</option>
+                        ))}
+                    </select>
+                    <input
+                        type="text"
+                        className={styles.searchInput}
+                        name="searchQuery"
+                        id="searchQuery"
+                        placeholder="유치원 검색"
+                        value={query}
+                        onChange={handleQueryChange}
+                    />
+                    <input className={styles.searchBtn} type="submit" value="검색" />
+                </form>
+            </div>
             <div className={styles.selectedItems}>
                 {selectedItems.map((item, index) => (
                     <div key={index} className={styles.selectedItem}>
@@ -188,6 +202,7 @@ function EduSearchBox({ onSearch, selectedItems, setSelectedItems, error, query,
         </div>
     );
 }
+
 
 function EducationMain() {
     const mapRef = useRef(null);
@@ -232,6 +247,14 @@ function EducationMain() {
                 index: index
             }));
             setMarkers(multiMarker);
+            //0번 마커로 이동
+            if (multiMarker.length > 0) {
+                const firstMarker = multiMarker[0].position;
+                if (mapRef.current) {
+                    const center = new window.kakao.maps.LatLng(firstMarker.lat, firstMarker.lng);
+                    mapRef.current.setCenter(center);
+                }
+            };
             setError("");
         } catch (err) {
             console.error("데이터 로드 오류:", err);
@@ -260,18 +283,24 @@ function EducationMain() {
                 // onClick 제거 (오버레이 관련)
             >
                 {markers.map((marker, index) => (
+                    <div key={`marker-container-${index}`}>
                     <MapMarker
                         key={`marker-${index}`}
+                        className={`marker-${index}`}
                         position={marker.position}
-                        clickable={true}
-                        // onClick 제거 (오버레이 관련)
+                        // clickable={true}
                     >
                         {/* 필요시 툴팁이나 간단한 정보 표시를 위해 MapMarker 내부에 내용 추가 가능 */}
-                        <div className={styles.markerInfo}>
+                        
+                        <div
+                            key={`markerInfo-${index}`}
+                            className={styles.markerInfo}
+                        >
                             <h4>{marker.content}</h4>
                             <p>{marker.category}</p>
                         </div>
                     </MapMarker>
+                </div>
                 ))}
             </CommonMap>
             <SideTab>
@@ -297,6 +326,8 @@ function EducationMain() {
                         setSelectedItems={setAreas}
                         query={query}
                         setQuery={setQuery}
+                        setResults={setResults}
+                        setError={setError}
                     /><br/>
                     <KindergartenList 
                         results={results} 
@@ -304,6 +335,9 @@ function EducationMain() {
                         page={page}
                         setPage={setPage}
                         totalPages={results.searchVO.totPage}
+                        fetchData={fetchData}
+                        query={query}
+                        areas={areas}
                     />
                 </div>
             </SideTab>
