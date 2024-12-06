@@ -72,7 +72,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     );
 };
 
-function KindergartenList({ results, error, page, setPage, totalPages, fetchData, query, areas }) {
+function KindergartenList({ results, error, page, setPage, totalPages, fetchData, query, areas, onSelect }) {
 
     // 페이지 변경 핸들러
     const handlePageChange = (newPage) => {
@@ -88,7 +88,11 @@ function KindergartenList({ results, error, page, setPage, totalPages, fetchData
                 <div className={styles.kinderResultPageing}>
                     <ul className={styles.kinderResultList}>
                         {results.items.map((item, index) => (
-                            <li key={index} className={styles.resultItem}>
+                            <li
+                                key={index} 
+                                className={styles.resultItem}
+                                onClick={() => onSelect(item)}
+                            >
                                 <h4>{item.kindergarten_name}</h4>
                                 <p>{item.address}</p>
                             </li>
@@ -203,13 +207,18 @@ function EduSearchBox({ onSearch, selectedItems, setSelectedItems, error, query,
     );
 }
 
-function Infotab(kinderInfo) {
+function Infotab({ kinderInfo }) {
 
+    const smallTitle = [
+        "전화번호","운영시간","대표자명","원장명","설립일","개원일",
+        "관할기관","주소","홈페이지"
+    ]
+    console.log("kinderInfo.tel 인포함수", kinderInfo.tel);
     return <>
         <div className={styles.infoBackground}>
             <div className={styles.infoBaseBox}>
-                <div classNAme={styles.infoBaseTitle}>
-                    <h5>기본정보</h5>
+                <div className={styles.infoBaseTitle}>
+                    <h5 className={styles.semiTitle}>기본정보</h5>
                     <ul className={styles.infoBaseUl}>
                         <li className={styles.infoBaseLi}>
                             <i>전화번호</i>
@@ -249,14 +258,14 @@ function Infotab(kinderInfo) {
                         </li>
                     </ul>
                 </div>
-                <div classNAme={styles.infoBaseTitle}>
+                <div className={styles.infoBaseTitle}>
                     <h5>통학차량</h5>
                     <span>{kinderInfo.car_check}</span>
                 </div>
-                <div classNAme={styles.infoBaseTitle}>
+                <div className={styles.infoBaseTitle}>
                     <h5>제공서비스</h5>
                     <ul>
-                        <li></li>
+                        <li className={styles.infoBaseLi}></li>
                     </ul>
                 </div>
             </div>
@@ -281,7 +290,7 @@ function EducationMain() {
             totPage: 1
         }
     });
-    const [kinderInfo, setKinderInfo] = useState([])
+    const [selectedKinderInfo, setselectedKinderInfo] = useState([])
     
 
     const fetchData = async (query, areas, page = 1) => {
@@ -335,19 +344,6 @@ function EducationMain() {
         }
     }, [query, areas, page]);
 
-    const handleMouseEnter = (index) => {
-        const marker = document.querySelector(`.marker-container-${index}`);
-        if (marker) {
-            marker.style.zIndex = 10000; // 가장 높은 값으로 설정
-        }
-    };
-    
-    const handleMouseLeave = (index) => {
-        const marker = document.querySelector(`.marker-container-${index}`);
-        if (marker) {
-            marker.style.zIndex = 1; // 기본값으로 복구
-        }
-    };
     const kinderinfo = async (marker) => {
         try {
             const response = await axios.get('http://localhost:9002/seoul/education/eduKinderInfo',{
@@ -356,7 +352,25 @@ function EducationMain() {
                     kinderAddress: marker.category,
                 },
             });
-            setKinderInfo(response.data);
+            setselectedKinderInfo(response.data);
+            setError("");
+        } catch (err) {
+            console.error("데이터 로드 오류:", err);
+            setError("데이터 불러오기 중 오류 발생");
+        }
+    }
+    const selectKinderInfo = async (item) => {
+        try {
+            const response = await axios.get('http://localhost:9002/seoul/education/eduKinderInfo', {
+                params: {
+                    kinderName: item.kindergarten_name,
+                    kinderAddress: item.address,
+                },
+            });
+            console.log("item.kindergarten_name",item.kindergarten_name);
+            console.log("item.address",item.address);
+            setselectedKinderInfo(response.data);
+            console.log("스프링 데이터 address", selectedKinderInfo.address);
             setError("");
         } catch (err) {
             console.error("데이터 로드 오류:", err);
@@ -376,8 +390,6 @@ function EducationMain() {
                 {markers.map((marker, index) => (
                     <div
                         key={`marker-container-${index}`}
-                        onMouseEnter={() => handleMouseEnter(index)}
-                        onMouseLeave={() => handleMouseLeave(index)}
                         className={`${styles.markerContainer} marker-container-${index}`}
                     >
                     <MapMarker
@@ -401,9 +413,7 @@ function EducationMain() {
                 </div>
                 ))}
             </CommonMap>
-            <Infotab
-                kinderInfo={kinderInfo}
-            />
+            {selectedKinderInfo && (<Infotab kinderInfo={selectedKinderInfo} />)}
             <SideTab>
                 <div className={styles.educationTab}>
                     {educationCategories.map((category, index) => (
@@ -439,6 +449,7 @@ function EducationMain() {
                         fetchData={fetchData}
                         query={query}
                         areas={areas}
+                        onSelect={selectKinderInfo}
                     />
                 </div>
             </SideTab>

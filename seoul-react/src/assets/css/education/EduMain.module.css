@@ -199,6 +199,9 @@
     background-color: #bbb;
     color: #fefefe;
 }
+/* 
+                지도 오버레이
+*/
 .markerInfo p{
     font-size: 0.8em;
     overflow:hidden;
@@ -248,6 +251,23 @@
     z-index: 999999; /* 다른 요소 위로 올라오도록 설정 */
 }
 
-.infoBaseLi i{
-    font-style: normal;
+
+.infoBaseLi{
+    list-style-type: none;
+    line-height: 2.2rem;
+    position: relative;
+    display: table;
 }
+.infoBaseLi i{
+    display: table-cell;
+    font-style: normal;
+    font-size: 0.8em;
+    line-height: 1.6rem;
+}
+.infoBaseLi span{
+    margin-left: 50px;
+    font-style: normal;
+    font-size: 0.8em;
+    
+}
+

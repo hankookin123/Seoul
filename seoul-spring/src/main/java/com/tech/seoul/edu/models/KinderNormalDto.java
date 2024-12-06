@@ -1,11 +1,9 @@
 package com.tech.seoul.edu.models;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
-public class KindergartenDto {
+public class KinderNormalDto {
 
 	private String office_education;
 	private String kindergarten_name;
