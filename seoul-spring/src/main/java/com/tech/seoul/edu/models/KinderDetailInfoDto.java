@@ -11,12 +11,12 @@ public class KinderDetailInfoDto {
     private String address;
 
     // kids_classroom_area 테이블 필드
-    private String classroom_count;
-    private String area_classroom;
-    private String area_gym;
-    private String area_clean;
-    private String area_cook;
-    private String area_etc;
+    private int classroom_count;
+    private int area_classroom;
+    private int area_gym;
+    private int area_clean;
+    private int area_cook;
+    private int area_etc;
 
     // kids_school_meals 테이블 필드
     private String management_method;
@@ -86,6 +86,9 @@ public class KinderDetailInfoDto {
     private int students_now_5;
     private int students_now_mix;
     private int students_now_special;
+    
+    //교사수
+    private int total_teacher_count;
 
     // 공통 필드 (위치 정보)
     private double y_coordinate;

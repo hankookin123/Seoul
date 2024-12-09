@@ -4,11 +4,11 @@ import SideTab from '../common/SideTab';
 import CommonMap from '../common/CommonMap';
 import axios from 'axios';
 import styles from '../../assets/css/education/EduMain.module.css';
-import { Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, plugins } from 'chart.js';
+import { Doughnut, Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
 
 // Chart.js 요소
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     if (totalPages <= 1) return null;
@@ -226,23 +226,128 @@ function Infotab({ kinderInfo, isVisible, setIsVisible }) {
     if (!isVisible) return null;
 
     //char 데이터
-    const chartData = {
-        labels: ["교사수", "학생수"], //데이터이름
-        datasets:[
+    // const chartData = {
+    //     labels: ["교사수", "학생수"], //데이터이름
+    //     datasets:[
+    //         {
+    //             label: "인원분포", //제목
+    //             data: [kinderInfo.teacher_total_count, kinderInfo.students_total_count],
+    //             backgroundColor: ["#FF6384", "#36A2EB"],
+    //         },
+    //     ],
+    // };
+    const chartData = [
+        [
+            kinderInfo.class_count_3, 
+            kinderInfo.class_count_4, 
+            kinderInfo.class_count_5, 
+            kinderInfo.class_count_mix,
+            kinderInfo.class_count_special
+        ],
+        [
+            kinderInfo.students_now_3,
+            kinderInfo.students_now_4,
+            kinderInfo.students_now_5,
+            kinderInfo.students_now_mix,
+            kinderInfo.students_now_special
+        ],
+        [
+            (kinderInfo.students_total_count/kinderInfo.total_teacher_count).toFixed(1),
+            (kinderInfo.students_total_count/(
+                kinderInfo.class_count_3+
+                kinderInfo.class_count_4+
+                kinderInfo.class_count_5+
+                kinderInfo.class_count_mix+
+                kinderInfo.class_count_special
+            )).toFixed(1),
+        ],
+        [
+            kinderInfo.area_classroom,
+            kinderInfo.area_gym,
+            kinderInfo.area_clean,
+            kinderInfo.area_cook,
+            kinderInfo.area_etc
+        ],
+        
+    ];
+    
+    const chartLabels = [
+        ["만 3세반","만 4세반","만 5세반","혼합반","특수학급"],
+        ["만 3세반","만 4세반","만 5세반","혼합반","특수학급"],
+        ["교사당 유아수","학급당 유아수"],
+        ["교실면적", "실내체육장","보건/위생공간","조리/급식실","기타공간"],
+    ];
+    const chartLabel =[
+        "학급수(개)",
+        "유아수(명)",
+        "교사당/학급당 유아수(명)",
+        "면적(㎡)",
+    ];
+    const rowSums = chartData.map(row => 
+        row.reduce((sum, value) => sum + (value || 0), 0) // null이나 undefined를 0으로 처리
+    );
+    const backCol = (data) => {
+        const colors = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40", "#8ee10b"];
+        return data.map((value, index) => {
+            if (value === 0 || value === null) {
+                return "#ddd"; // 회색 처리
+            }
+            return colors[index % colors.length]; // 색상을 순환하여 적용
+        });
+    };
+    
+    const createChartData = (labels, label, data) => ({
+        labels,
+        datasets: [
             {
-                label: "인원분포", //제목
-                data: [kinderInfo.teacher_total_count, kinderInfo.students_total_count],
-                backgroundColor: ["#FF6384", "#36A2EB"],
+                label,
+                data,
+                backgroundColor: backCol(data),
             },
         ],
+    });
+    const barChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false, // 고정된 높이를 사용하기 위해 false로 설정
+        scales: {
+            x: {
+                beginAtZero: true,
+                grid: {
+                    display: false // X축의 그리드 라인을 제거
+                },
+                title: {
+                    display: false,
+                }
+            },
+            y: {
+                beginAtZero: true,
+                grid: {
+                    display: false // Y축의 그리드 라인을 제거
+                },
+                title: {
+                    display: false,
+                },
+                ticks:{
+                    display: false,
+                },
+            }
+        },
+        plugins: {
+            legend: {
+                display: false, // 범례를 숨김
+                position: "bottom",
+            },
+        },
     };
+    
+    
     //chart opition
     const chartOptions = {
         responsive: true,
         maintainAspectRatio: true,
         plugins: {
             legend: {
-                display: true,
+                display: false,
                 position: "bottom",
             },
         },
@@ -260,7 +365,9 @@ function Infotab({ kinderInfo, isVisible, setIsVisible }) {
                 </button>
                 <div className={styles.infoBaseBox}>
                     <div className={styles.infoBaseTitle}>
-                        <h3 className={styles.semiTitle}>기본정보</h3>
+                        <h2 className={styles.semiTitle}>
+                            기본정보
+                        </h2>
                         <ul className={styles.infoBaseUl}>
                             <li className={styles.infoBaseLi}>
                                 <i>유치원이름</i>
@@ -311,26 +418,51 @@ function Infotab({ kinderInfo, isVisible, setIsVisible }) {
                         </ul>
                     </div>
                     <br/>
-                    <br/>
                     <div className={styles.infoBaseTitle}>
-                        <h4 className={styles.semiTitle}>통계</h4>
+                        <h2 className={styles.semiTitle}>
+                            현황
+                        </h2>
                         <div className={styles.infoChartBox}>
-                            <div className={styles.cycleChart}>
-                                <h4>교사와 학생 비율</h4>
-                                <Doughnut data={chartData} options={chartOptions} />
-                            </div>
-                            <div className={styles.cycleChart}>
-                                <h4>교사와 학생 비율</h4>
-                                <Doughnut data={chartData} options={chartOptions} />
-                            </div>
-                            <div className={styles.cycleChart}>
-                                <h4>교사와 학생 비율</h4>
-                                <Doughnut data={chartData} options={chartOptions} />
-                            </div>
-                            <div className={styles.cycleChart}>
-                                <h4>교사와 학생 비율</h4>
-                                <Doughnut data={chartData} options={chartOptions} />
-                            </div>
+                            {chartData.map((data, chartIndex) => (
+                                <div key={chartIndex} className={styles.cycleChart}>
+                                    <h4>{chartLabel[chartIndex]}</h4> {/* 차트별 제목 */}
+                                    {chartIndex === 2 ? (
+                                        <Bar
+                                            data={createChartData(chartLabels[chartIndex], chartLabel[chartIndex], chartData[chartIndex])}
+                                            options={barChartOptions}
+                                            height={700}
+                                        />
+                                    ) : (
+                                        <Doughnut
+                                            data={createChartData(chartLabels[chartIndex], chartLabel[chartIndex], chartData[chartIndex])}
+                                            options={chartOptions}
+                                        />
+                                    )}
+                                    <ul className={styles.legendList}>
+                                        {chartLabels[chartIndex].map((label, index) => (
+                                            
+                                            <li key={index} className={styles.legendItem}>
+                                                <span
+                                                    className={styles.legendCol}
+                                                    style={{
+                                                        backgroundColor: backCol(chartData[chartIndex])[index], // 해당 차트의 색상
+                                                    }}
+                                                ></span>
+                                                <span 
+                                                    className={styles.legendText}
+                                                    style={chartData[chartIndex][index] === 0 ? {color: "#bbb"} : {}}
+                                                >
+                                                    {label}: {chartData[chartIndex][index] || "0"}
+                                                </span> 
+                                                {chartData[chartIndex][index] === 0 || chartIndex === 2
+                                                    ? '' 
+                                                    : `${(chartData[chartIndex][index] / rowSums[chartIndex] * 100).toFixed(1)}%`}
+
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
