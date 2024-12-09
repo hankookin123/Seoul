@@ -4,6 +4,11 @@ import SideTab from '../common/SideTab';
 import CommonMap from '../common/CommonMap';
 import axios from 'axios';
 import styles from '../../assets/css/education/EduMain.module.css';
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, plugins } from 'chart.js';
+
+// Chart.js 요소
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     if (totalPages <= 1) return null;
@@ -207,70 +212,131 @@ function EduSearchBox({ onSearch, selectedItems, setSelectedItems, error, query,
     );
 }
 
-function Infotab({ kinderInfo }) {
+function Infotab({ kinderInfo, isVisible, setIsVisible }) {
 
-    const smallTitle = [
-        "전화번호","운영시간","대표자명","원장명","설립일","개원일",
-        "관할기관","주소","홈페이지"
-    ]
-    console.log("kinderInfo.tel 인포함수", kinderInfo.tel);
-    return <>
-        <div className={styles.infoBackground}>
-            <div className={styles.infoBaseBox}>
-                <div className={styles.infoBaseTitle}>
-                    <h5 className={styles.semiTitle}>기본정보</h5>
-                    <ul className={styles.infoBaseUl}>
-                        <li className={styles.infoBaseLi}>
-                            <i>전화번호</i>
-                            <span>{kinderInfo.tel}</span>
-                        </li>
-                        <li className={styles.infoBaseLi}>
-                            <i>운영시간</i>
-                            <span>{kinderInfo.operating_hours}</span>
-                        </li>
-                        <li className={styles.infoBaseLi}>
-                            <i>대표자명</i>
-                            <span>{kinderInfo.hearder}</span>
-                        </li>
-                        <li className={styles.infoBaseLi}>
-                            <i>원장명</i>
-                            <span>{kinderInfo.director}</span>
-                        </li>
-                        <li className={styles.infoBaseLi}>
-                            <i>설립일</i>
-                            <span>{kinderInfo.birth}</span>
-                        </li>
-                        <li className={styles.infoBaseLi}>
-                            <i>개원일</i>
-                            <span>{kinderInfo.start}</span>
-                        </li>
-                        <li className={styles.infoBaseLi}>
-                            <i>관할기관</i>
-                            <span>{kinderInfo.office_education}</span>
-                        </li>
-                        <li className={styles.infoBaseLi}>
-                            <i>주소</i>
-                            <span>{kinderInfo.address}</span>
-                        </li>
-                        <li className={styles.infoBaseLi}>
-                            <i>홈페이지</i>
-                            <span>{kinderInfo.home_page}</span>
-                        </li>
-                    </ul>
-                </div>
-                <div className={styles.infoBaseTitle}>
-                    <h5>통학차량</h5>
-                    <span>{kinderInfo.car_check}</span>
-                </div>
-                <div className={styles.infoBaseTitle}>
-                    <h5>제공서비스</h5>
-                    <ul>
-                        <li className={styles.infoBaseLi}></li>
-                    </ul>
+    // const smallTitle = [
+    //     "전화번호","운영시간","대표자명","원장명","설립일","개원일",
+    //     "관할기관","주소","홈페이지"
+    // ]
+
+    const closeInfoButton = () => {
+        setIsVisible(false);
+    };
+
+    if (!isVisible) return null;
+
+    //char 데이터
+    const chartData = {
+        labels: ["교사수", "학생수"], //데이터이름
+        datasets:[
+            {
+                label: "인원분포", //제목
+                data: [kinderInfo.teacher_total_count, kinderInfo.students_total_count],
+                backgroundColor: ["#FF6384", "#36A2EB"],
+            },
+        ],
+    };
+    //chart opition
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: "bottom",
+            },
+        },
+    };
+
+    return (
+        <>
+            <div className={styles.infoBackground}>
+                <button
+                    type="button"
+                    className={styles.closeInfoButton}
+                    onClick={() => closeInfoButton()}
+                >
+                    x
+                </button>
+                <div className={styles.infoBaseBox}>
+                    <div className={styles.infoBaseTitle}>
+                        <h3 className={styles.semiTitle}>기본정보</h3>
+                        <ul className={styles.infoBaseUl}>
+                            <li className={styles.infoBaseLi}>
+                                <i>유치원이름</i>
+                                <span>{kinderInfo.kindergarten_name}</span>
+                            </li>
+                            <li className={styles.infoBaseLi}>
+                                <i>전화번호</i>
+                                <span>{kinderInfo.tel}</span>
+                            </li>
+                            <li className={styles.infoBaseLi}>
+                                <i>운영시간</i>
+                                <span>{kinderInfo.operating_hours}</span>
+                            </li>
+                            <li className={styles.infoBaseLi}>
+                                <i>대표자명</i>
+                                <span>{kinderInfo.hearder}</span>
+                            </li>
+                            <li className={styles.infoBaseLi}>
+                                <i>원장명</i>
+                                <span>{kinderInfo.director}</span>
+                            </li>
+                            <li className={styles.infoBaseLi}>
+                                <i>설립일</i>
+                                <span>{kinderInfo.birth}</span>
+                            </li>
+                            <li className={styles.infoBaseLi}>
+                                <i>개원일</i>
+                                <span>{kinderInfo.start}</span>
+                            </li>
+                            <li className={styles.infoBaseLi}>
+                                <i>관할기관</i>
+                                <span>{kinderInfo.office_education}</span>
+                            </li>
+                            <li className={styles.infoBaseLi}>
+                                <i>주소</i>
+                                <span>{kinderInfo.address}</span>
+                            </li>
+                            <li className={styles.infoBaseLi}>
+                                <i>홈페이지</i>
+                                <span><a href={kinderInfo.home_page} target="_blank" rel="noopener noreferrer">
+                                    {kinderInfo.home_page}
+                                </a></span>
+                            </li>
+                            <li className={styles.infoBaseLi}>
+                                <i>통학차량</i>
+                                <span>{kinderInfo.car_check}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div className={styles.infoBaseTitle}>
+                        <h4 className={styles.semiTitle}>통계</h4>
+                        <div className={styles.infoChartBox}>
+                            <div className={styles.cycleChart}>
+                                <h4>교사와 학생 비율</h4>
+                                <Doughnut data={chartData} options={chartOptions} />
+                            </div>
+                            <div className={styles.cycleChart}>
+                                <h4>교사와 학생 비율</h4>
+                                <Doughnut data={chartData} options={chartOptions} />
+                            </div>
+                            <div className={styles.cycleChart}>
+                                <h4>교사와 학생 비율</h4>
+                                <Doughnut data={chartData} options={chartOptions} />
+                            </div>
+                            <div className={styles.cycleChart}>
+                                <h4>교사와 학생 비율</h4>
+                                <Doughnut data={chartData} options={chartOptions} />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </>
+        </>
+    );
 }
 
 function EducationMain() {
@@ -290,9 +356,9 @@ function EducationMain() {
             totPage: 1
         }
     });
-    const [selectedKinderInfo, setselectedKinderInfo] = useState([])
+    const [selectedKinderInfo, setselectedKinderInfo] = useState({});
+    const [isVisible, setIsVisible] = useState(false);
     
-
     const fetchData = async (query, areas, page = 1) => {
         try {
             const response = await axios.get('http://localhost:9002/seoul/education/eduGardenSearch', {
@@ -344,7 +410,7 @@ function EducationMain() {
         }
     }, [query, areas, page]);
 
-    const kinderinfo = async (marker) => {
+    const markerKinderinfo = async (marker) => {
         try {
             const response = await axios.get('http://localhost:9002/seoul/education/eduKinderInfo',{
                 params: {
@@ -353,6 +419,7 @@ function EducationMain() {
                 },
             });
             setselectedKinderInfo(response.data);
+            setIsVisible(true);
             setError("");
         } catch (err) {
             console.error("데이터 로드 오류:", err);
@@ -361,23 +428,21 @@ function EducationMain() {
     }
     const selectKinderInfo = async (item) => {
         try {
-            const response = await axios.get('http://localhost:9002/seoul/education/eduKinderInfo', {
-                params: {
-                    kinderName: item.kindergarten_name,
-                    kinderAddress: item.address,
-                },
-            });
-            console.log("item.kindergarten_name",item.kindergarten_name);
-            console.log("item.address",item.address);
-            setselectedKinderInfo(response.data);
-            console.log("스프링 데이터 address", selectedKinderInfo.address);
+            // const response = await axios.get('http://localhost:9002/seoul/education/eduKinderInfo', {
+            //     params: {
+            //         kinderName: item.kindergarten_name,
+            //         kinderAddress: item.address,
+            //     },
+            // });
+            // setselectedKinderInfo(response.data);
+            const center = new window.kakao.maps.LatLng(item.y_coordinate, item.x_coordinate);
+            mapRef.current.setCenter(center);
             setError("");
         } catch (err) {
             console.error("데이터 로드 오류:", err);
             setError("데이터 불러오기 중 오류 발생");
         }
     }
-    
 
     return (
         <div className={styles.educationContainer}>
@@ -404,7 +469,7 @@ function EducationMain() {
                     >
                         <div
                             className={styles.markerInfo}
-                            onClick={() => kinderinfo(marker)}
+                            onClick={() => markerKinderinfo(marker)}
                         >
                             <h4>{marker.content}</h4>
                             <p>{marker.category}</p>
@@ -413,7 +478,11 @@ function EducationMain() {
                 </div>
                 ))}
             </CommonMap>
-            {selectedKinderInfo && (<Infotab kinderInfo={selectedKinderInfo} />)}
+            <Infotab 
+                kinderInfo={selectedKinderInfo}
+                setIsVisible={setIsVisible}
+                isVisible={isVisible}
+            />
             <SideTab>
                 <div className={styles.educationTab}>
                     {educationCategories.map((category, index) => (

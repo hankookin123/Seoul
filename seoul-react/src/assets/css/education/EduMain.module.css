@@ -152,6 +152,9 @@
 .kinderResultListBox{
     padding: 0 0 10px 0;
 }
+.kinderResultList li{
+    cursor: pointer;
+}
 
 .resultItem {
     align-items: center; /* 세로(수직) 방향 가운데 정렬 */
@@ -219,6 +222,7 @@
     border-radius: 8px; /* 모서리를 둥글게 */
     padding: 5px;
     transform: translateY(-75px);
+    cursor: pointer;
 }
 .marker-container {
     position: relative; /* 상대 위치 설정 */
@@ -251,23 +255,71 @@
     z-index: 999999; /* 다른 요소 위로 올라오도록 설정 */
 }
 
+.semiTitle{
+    margin-top: 20px;
+    text-align: center;
+}
+.infoBaseUl{
+    margin-top: 10px;
+    margin-left: 50px;
+}
 
 .infoBaseLi{
     list-style-type: none;
-    line-height: 2.2rem;
+    line-height: 2rem;
     position: relative;
-    display: table;
+    display: flex;
+    align-items: center; 
 }
 .infoBaseLi i{
+    min-width: 100px;
+    display: table-cell;
+    font-style: normal;
+    font-size: 0.8em;
+    line-height: 1.6rem;
+}
+.infoBaseLi h5{
+    min-width: 100px;
     display: table-cell;
     font-style: normal;
     font-size: 0.8em;
     line-height: 1.6rem;
 }
 .infoBaseLi span{
-    margin-left: 50px;
+    margin-left: 20px;
     font-style: normal;
     font-size: 0.8em;
     
 }
 
+.closeInfoButton{
+    float: right;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    font-size: 30px;
+}
+.infoChartBox{
+    display: flex;
+}
+.infoChartBox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    overflow: hidden;
+    height: 500px;
+    margin: 10px 0;
+}
+
+.chartjs-legend {
+    display: block !important; /* 범례가 숨겨지지 않도록 설정 */
+    visibility: visible !important;
+}
+.cycleChart{
+    text-align: center;
+    height: 200px; 
+    width: 200px; 
+}

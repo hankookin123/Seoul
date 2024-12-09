@@ -193,10 +193,10 @@
             kas.class_total_count,
             kas.students_independent_count,
             kas.students_afternoon_count,
-            kas.students_total_count as students_total_count_after_school,
+            kas.students_total_count,
             kas.teacher_regular_count,
             kas.teacher_temporary_count,
-            kas.teacher_Dedicated_count as teacher_dedicated_count,
+            kas.teacher_Dedicated_count,
             kas.teacher_total_count,
 
             ksi.play_goods_check,
