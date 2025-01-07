@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import styles from '../../assets/css/main/Home.module.css';
+import WeatherInfo from "../health/WeatherInfo";
 import { useNavigate } from 'react-router-dom';
 
 function Home(props) {
@@ -11,11 +12,12 @@ function Home(props) {
     
     function resize() {
         const windowHeight = window.innerHeight;
-        const menuHeight = document.querySelector(`.${ styles.mainHeader }`).scrollHeight;
 
+        const menuElement = document.querySelector(`.${ styles.mainHeader }`);
         const centerElement = document.querySelector(`.${ styles.mainCenter }`);
 
-        if (centerElement) {
+        if (centerElement && menuElement) {
+            const menuHeight = menuElement.clientHeight;
             centerElement.style.height = `${ windowHeight - menuHeight - 1 }px`;
         }
     }
@@ -29,18 +31,36 @@ function Home(props) {
 
     return (
         <>
-            <div className={ `${ styles.mainHeader } ${ styles.flexCenter }` }>
-                <div className={ styles.headerFontSetting }>I ❤︎ SEOUL</div>
+            <div className={`${styles.mainHeader} ${styles.flexCenter}`}>
+                <div className={`${styles.headerFontSetting} ${styles.flexCenter}`}>I ❤︎ SEOUL</div>
             </div>
-            <div className={ styles.mainCenter }>
-                { props.menuNames.map((menuName, index) => {
+            <div className={styles.mainWeather}>
+                <WeatherInfo/>
+            </div>
+            <div className={styles.mainCenter}>
+                <div className={styles.mainExplanation}>서울시 관련 공공 데이터 제공 서비스</div>
+                {props.menuNames.map((menuName, index) => {
                     return (
-                        <div key={ index } className={ `${styles.mainComponent} ${styles.flexCenter}` }
-                             onClick={() => { navigate(`${props.addressNames[index]}`); }}>
-                            <div className={ styles.componentFontSetting }>{ menuName }</div>
+                        <div key={index} className={`${styles.mainComponent}`}
+                             onClick={() => {
+                                 navigate(`${props.addressNames[index]}`);
+                             }}>
+                            <div className={styles.componentFontSetting}>
+                                {menuName}
+                                <div className={styles.componentEngFontSetting}>
+                                    {props.addressNames[index].charAt(0).toUpperCase() + props.addressNames[index].slice(1)}
+                                </div>
+                            </div>
+                            <div className={`${styles.componentImgContainer} ${styles.flexCenter}`}>
+                                <img
+                                    className={styles.componentImg}
+                                    src={`/images/main/${props.addressNames[index]}.png`}
+                                    alt={menuName}
+                                />
+                            </div>
                         </div>
                     );
-                }) }
+                })}
             </div>
         </>
     );

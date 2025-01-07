@@ -1,0 +1,472 @@
+.flexCenter {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+.educationContainer {
+    position: relative; 
+    width: 100%; 
+    height: 100%;
+    z-index: 0;
+    font-family: '맑은 고딕', 'Malgun Gothic', sans-serif;
+}
+.educationFrame {
+    width: 100%; 
+    height: 100%;
+}
+.educationHeader {
+    display: flex; 
+    justify-content: space-around; 
+    align-items: center; 
+    width: 100%; 
+    height: 40px;
+}
+.educationHeaderCompontent {
+    width: 25%; 
+    height: 100%; 
+    border-right: 1px solid #fff; 
+    color: #111; font-size: 13px; 
+    letter-spacing: 0.1px; 
+    opacity: 0.9; 
+    cursor: pointer; 
+    user-select: none; 
+    overflow: hidden; 
+    white-space: nowrap; 
+    text-overflow: clip;
+}
+.educationHeader :first-child {
+    border-top-left-radius: 20px;
+}
+.educationHeader :last-child {
+    border-top-right-radius: 20px; 
+    border-right: none;
+}
+
+.overlaybox {
+    position: relative; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    width: 100px; 
+    height: 120px; 
+    background: url('../../../../public/images/main/overLay.png'); 
+    background-repeat: no-repeat; 
+    background-size: 100px 120px; 
+    overflow: hidden;
+}
+.overlaybox .boxtitle {
+    width: 100%; 
+    padding: 10px 0 5px 0; 
+    color: #fff; 
+    font-size: 15px; 
+    font-weight: 400;
+}
+.overlaybox .overlayContent {
+    position: relative; 
+    width: 85%; 
+    height: 55%; 
+    padding: 5px; 
+    background: #666565;
+    border-radius: 3px; 
+    color: #fff; 
+    line-height: 1; 
+    font-size: 13px; 
+    line-height: 16px; 
+    white-space: normal; 
+    word-wrap: break-word;
+}
+.educationTab{
+    display: flex;
+    height: 40px;
+    border-radius: 20px 20px 0 0;
+    gap: 1px;
+    overflow: hidden;
+    align-items: center;
+    text-align: center;
+}
+.educationTab .tab{
+    display: flex;
+    height: 100%;
+    background-color: #b8b8b8;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+}
+.educationTab .tab.active{
+    background-color: #e0e0e0; /* 선택된 탭의 배경색 */
+    font-weight: bold; /* 글씨 굵게 */
+    color: #111; /* 글씨 색상 */
+}
+.searchBox{
+    height: 80px;
+    width:100%;
+    margin:10px 0;
+    padding: 0 5px;
+    align-items: center;
+}
+.searchLine{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+.searchInput{
+    width: 250px;
+}
+.searchBtn{
+    width: 40px;
+    height: 30px;
+}
+.searchBox select,
+.searchBox input[type="text"] {
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.selectedItems {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.selectedItem {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.removeButton {
+    margin-left: 5px;
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-weight: bold;
+}
+.filterBox{
+    display: flex;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+}
+.filter_label{
+    margin-left: 15px;
+}
+.error {
+    color: red;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.kinderResultListBox{
+    padding: 0 0 10px 0;
+}
+.kinderResultList li{
+    cursor: pointer;
+}
+
+.resultItem {
+    margin-left:5px;
+    align-items: center; /* 세로(수직) 방향 가운데 정렬 */
+    padding: 10px 0; /* 리스트 아이템 간 위아래 여백 추가 */
+    position: relative; /* 위치 조정 가능하도록 설정 */
+    list-style-type:none ;
+}
+.resultItem p{
+    font-size: 0.8em;
+}
+.resultItem::after {
+    content: ""; /* 가상 요소 생성 */
+    position: absolute; /* 부모를 기준으로 위치 지정 */
+    bottom: 0; /* 내용물에서 3px 아래로 선 배치 */
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid #ddd; /* 수평선 스타일 */
+}
+
+.footPage {
+    display: flex; /* 수평 정렬 */
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center; /* 세로 정렬 */
+}
+
+.pagination {
+    margin-top: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+
+    > * {
+        cursor: pointer;
+    }
+}
+
+.pagination__link {
+    transition: all 0.25s;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.3rem;
+}
+
+.pagination__link__active {
+    background-color: #bbb;
+    color: #fefefe;
+}
+/* 
+                지도 오버레이
+*/
+.markerInfo p{
+    font-size: 0.8em;
+    overflow:hidden;
+    height:auto;
+}
+
+.markerInfo {
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    max-width: 250px; 
+    height: 90px;
+    width: 220px; /* 고정 너비 220px */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가 */
+    font-size: 14px; /* 글씨 크기 */
+    background-color: white; /* 배경을 흰색으로 설정 */
+    line-height: 1.5; /* 줄 간격 */
+    text-align: center; /* 내용 정렬 */
+    border: 1.5px solid #ccc; /* 테두리를 추가해 구분 가능하게 */
+    border-radius: 8px; /* 모서리를 둥글게 */
+    padding: 5px;
+    transform: translateY(-90px);
+    cursor: pointer;
+
+    /* 줄바꿈 관련 속성 추가 */
+    white-space: normal; /* 공백에서 줄바꿈을 허용 */
+    word-break: keep-all; /* 단어 단위로 줄바꿈 (단어가 너무 길면 전체 단어 줄바꿈) */
+    overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
+    transition: transform  0.2s ease; /* 애니메이션 부드럽게 적용 */
+    transform-origin: center; /* 확대 기준을 가운데로 설정 */
+}
+
+/* 마우스를 올렸을 때 (hover) 스타일 */
+.markerInfo:hover {
+    border: 2px solid #555;
+}
+
+.marker-container {
+    position: relative; /* 상대 위치 설정 */
+    z-index: 1; /* 기본 z-index */
+}
+
+.markerSet,
+.customO {
+    position: absolute; /* 오버레이와 마커 위치 */
+    z-index: 1; /* 기본 z-index */
+}
+
+
+/* 
+        유치원 상세정보
+ */
+
+ .infoBackground0 {
+    position: absolute; /* 화면에 고정 위치 */
+    width: 600px; /* 가로 크기 */
+    height: 80%; /* 세로 크기 */
+    left: 40%; /* 화면의 왼쪽에서 40% 위치 */
+    top: 50%; /* 화면의 세로 중앙 */
+    transform: translate(-50%, -50%); /* 위치를 중앙으로 조정 */
+    background-color: rgba(255, 255, 255); /* 배경 흰색, 약간의 투명도 */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+    border-radius: 3px; /* 모서리 둥글게 */
+    padding: 10px; /* 내부 여백 */
+    overflow-y: auto; /* 내용이 넘치면 스크롤 */
+    z-index: 999999; /* 다른 요소 위로 올라오도록 설정 */
+    scrollbar-width: thin; /* Firefox에서 스크롤바 얇게 */
+    scrollbar-color: #cccccc #f0f0f0; /* Firefox 스크롤바 색상 */
+}
+ .infoBackground1_1 {
+    position: absolute; /* 화면에 고정 위치 */
+    width: 600px; /* 가로 크기 */
+    height: 45%; /* 세로 크기 */
+    left: 40%; /* 화면의 왼쪽에서 40% 위치 */
+    top: 50%; /* 화면의 세로 중앙 */
+    transform: translate(-50%, -50%); /* 위치를 중앙으로 조정 */
+    background-color: rgba(255, 255, 255); /* 배경 흰색, 약간의 투명도 */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+    border-radius: 3px; /* 모서리 둥글게 */
+    padding: 10px; /* 내부 여백 */
+    overflow-y: auto; /* 내용이 넘치면 스크롤 */
+    z-index: 999999; /* 다른 요소 위로 올라오도록 설정 */
+    scrollbar-width: thin; /* Firefox에서 스크롤바 얇게 */
+    scrollbar-color: #cccccc #f0f0f0; /* Firefox 스크롤바 색상 */
+}
+ .infoBackground1_2 {
+    position: absolute; /* 화면에 고정 위치 */
+    width: 600px; /* 가로 크기 */
+    height: 62%; /* 세로 크기 */
+    left: 40%; /* 화면의 왼쪽에서 40% 위치 */
+    top: 50%; /* 화면의 세로 중앙 */
+    transform: translate(-50%, -50%); /* 위치를 중앙으로 조정 */
+    background-color: rgba(255, 255, 255); /* 배경 흰색, 약간의 투명도 */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+    border-radius: 3px; /* 모서리 둥글게 */
+    padding: 10px; /* 내부 여백 */
+    overflow-y: auto; /* 내용이 넘치면 스크롤 */
+    z-index: 999999; /* 다른 요소 위로 올라오도록 설정 */
+    scrollbar-width: thin; /* Firefox에서 스크롤바 얇게 */
+    scrollbar-color: #cccccc #f0f0f0; /* Firefox 스크롤바 색상 */
+}
+ .infoBackground2 {
+    position: absolute; /* 화면에 고정 위치 */
+    width: 600px; /* 가로 크기 */
+    height: 45%; /* 세로 크기 */
+    left: 40%; /* 화면의 왼쪽에서 40% 위치 */
+    top: 50%; /* 화면의 세로 중앙 */
+    transform: translate(-50%, -50%); /* 위치를 중앙으로 조정 */
+    background-color: rgba(255, 255, 255); /* 배경 흰색, 약간의 투명도 */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+    border-radius: 3px; /* 모서리 둥글게 */
+    padding: 10px; /* 내부 여백 */
+    overflow-y: auto; /* 내용이 넘치면 스크롤 */
+    z-index: 999999; /* 다른 요소 위로 올라오도록 설정 */
+    scrollbar-width: thin; /* Firefox에서 스크롤바 얇게 */
+    scrollbar-color: #cccccc #f0f0f0; /* Firefox 스크롤바 색상 */
+}
+
+.infoBaseTitle{
+    margin-top: 30px;
+    border: solid 5px #ddd;
+    border-radius: 20px;
+    padding: 10px 0;
+}
+.semiTitle{
+    text-align: center;
+}
+.infoBaseUl{
+    margin-top: 10px;
+    margin-left: 50px;
+}
+
+.infoBaseLi{
+    list-style-type: none;
+    line-height: 2rem;
+    position: relative;
+    display: flex;
+    align-items: center; 
+}
+.infoBaseLi i{
+    min-width: 100px;
+    display: table-cell;
+    font-style: normal;
+    font-size: 0.8em;
+    line-height: 1.6rem;
+}
+.infoBaseLi h5{
+    min-width: 100px;
+    display: table-cell;
+    font-style: normal;
+    font-size: 0.8em;
+    line-height: 1.6rem;
+}
+.infoBaseLi span{
+    margin-left: 20px;
+    font-style: normal;
+    font-size: 0.8em;
+    display: inline-block; /* 블록처럼 동작하여 고정 너비를 적용 */
+    width: 360px; /* 너비를 360px로 고정 */
+    word-wrap: break-word; /* 단어를 끊어서 줄 바꿈 */
+    word-break: break-word; /* 긴 단어도 줄 바꿈 */
+    white-space: normal; /* 텍스트가 길어질 경우 자동 줄 바꿈 */
+}
+
+.closeInfoButton{
+    float: right;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    font-size: 30px;
+}
+
+.infoChartBox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    justify-content: center;
+    overflow: hidden;
+    height: 800px;
+    margin: 10px 0;
+}
+
+.chartjs-legend {
+    display: block !important; /* 범례가 숨겨지지 않도록 설정 */
+    visibility: visible !important;
+}
+.cycleChart{
+    text-align: center;
+    height: 200px; 
+    width: 200px; 
+}
+
+.legendList {
+    align-items: left;
+    list-style: none; /* 기본 리스트 스타일 제거 */
+    padding: 0;
+    margin: 10px 0 0;
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    gap: 5px; /* 항목 간 간격 */
+}
+
+.legendItem {
+    display: flex;
+    align-items: center; /* 텍스트와 색상 정렬 */
+    font-size: 14px; /* 글씨 크기 */
+    color: #333; /* 글씨 색상 */
+}
+
+.legendCol {
+    display: inline-block;
+    width: 16px; /* 원하는 크기로 조정 */
+    height: 16px;
+    border-radius: 4px; /* 둥근 모서리 */
+    margin-right: 8px; /* 텍스트와 간격 */
+}
+.legendText{
+    text-align: left;
+    min-width: 130px;
+}
+canvas{
+    margin-top: 10px;
+}
+
+/* 
+            놀이시설 info창 
+*/
+.footBlank{
+    margin-top: 10px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+.reserveBtn{
+    background-color: #ffffff; /* 흰색 배경 */
+    border: 1px solid #ccc; /* 선택 사항: 테두리를 추가 */
+    border-radius: 5px; /* 모서리를 둥글게 */
+    padding: 10px 20px; /* 버튼의 안쪽 여백 (상하 10px, 좌우 20px) */
+    font-size: 15px; /* 버튼 글자 크기 */
+    cursor: pointer; /* 마우스 포인터 변경 */
+    text-align: center; 
+    transition: background-color 0.2s ease; /* 버튼에 애니메이션 효과 추가 */
+}
+.reserveBtn:hover {
+    border: 1px solid #777; /* 선택 사항: 테두리를 추가 */
+    background-color: #eee; /* 마우스 올렸을 때 색상 변화 */
+}

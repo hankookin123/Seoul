@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tech.seoul.health.models.HealthDao">
+    <!-- 위치 기반 검색 쿼리, 구면 코사인 법칙을 사용하여 사용자와 병원 사이의 대원 거리를 계산 -->
+    <select id="findHospitalWithRadius" resultType="com.tech.seoul.health.models.HospitalDto">
+        SELECT *
+        FROM hosp_info
+        WHERE (
+        6371 * acos(
+        cos(radians(#{lat})) *
+        cos(radians(hosp_lat)) *
+        cos(radians(hosp_lon) - radians(#{lon})) +
+        sin(radians(#{lat})) *
+        sin(radians(hosp_lat))
+        )
+        ) <![CDATA[<=]]> #{radius}
+        <if test="keyword != null and keyword != ''">
+            AND hosp_name LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="subject != null and subject != ''">
+            AND (
+                hosp_name LIKE CONCAT('%', #{subject}, '%')
+                or hosp_sbj LIKE CONCAT('%', #{subject}, '%')
+            )
+        </if>
+        <if test="week != null and week != ''">
+            <choose>
+                <when test="week == '토요일 진료'">
+                    AND hosp_sat_oc != '00:00-00:00'
+                </when>
+                <when test="week == '일요일 진료'">
+                    AND hosp_sun_oc != '00:00-00:00'
+                </when>
+                <when test="week == '공휴일 진료'">
+                    AND hosp_hol_oc != '00:00-00:00'
+                </when>
+            </choose>
+        </if>
+    </select>
+    <select id="findPharmacyWithRadius" resultType="com.tech.seoul.health.models.PharmacyDto">
+        SELECT
+        *,
+        (6371 * acos(
+        cos(radians(#{lat})) *
+        cos(radians(pharm_lat)) *
+        cos(radians(pharm_lon) - radians(#{lon})) +
+        sin(radians(#{lat})) *
+        sin(radians(pharm_lat))
+        )) AS distance
+        FROM pharm_info
+        HAVING distance <![CDATA[<=]]> #{radius}
+        ORDER BY distance
+        LIMIT 3;
+    </select>
+</mapper>

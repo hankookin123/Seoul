@@ -3,16 +3,31 @@ import './assets/css/main/App.css';
 // React Router Setting
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 
-// Component
+// Common Component
 import Home from "./components/main/Home";
 import MainLayout from "./components/main/MainLayout";
+import InsertDB from './components/db/InsertDB';
 
 // Culture Component
 import CultureMain from "./components/culture/CultureMain";
 
+// Education Component
+import EducationMain from './components/education/EducationMain';
+
+// Exercise Component
+import ExerciseMain from './components/exercise/ExerciseMain';
+
+// Health Component
+import HealthMain from './components/health/HealthMain';
+
+// Tour Component
+import TourInfo from './components/tour/MapComponent';
+import TourFestival from './components/tour/MapComponentFestival';
+import TourPet from './components/tour/MapComponentPet';
+
 function App() {
-  const menuNames = [ '육아', '문화', '체육', '강좌', '건강', '관광' ];
-  const addressNames = [ 'education', 'culture', 'exercise', 'lecture', 'health', 'tour' ];
+  const menuNames = [ '어린이', '문화', '체육', '건강', '관광' ];
+  const addressNames = [ 'education', 'culture', 'exercise', 'health', 'tour' ];
 
   return (
     <BrowserRouter>
@@ -22,6 +37,14 @@ function App() {
             <Route path="/" element={<Navigate to="/seoul" />} />
             <Route path="/seoul" element={ <Home menuNames={ menuNames } addressNames={ addressNames } /> }></Route>
             <Route path="/seoul/culture" element={ <CultureMain /> }></Route>
+            <Route path="/seoul/education" element={ <EducationMain /> }></Route>
+            <Route path="/seoul/exercise" element={ <ExerciseMain /> }></Route>
+            <Route path="/seoul/health" element={ <HealthMain /> }></Route>
+            <Route path="/seoul/tour" element={ <TourInfo /> }></Route>
+            <Route path="/seoul/tour/festival" element={ <TourFestival /> }></Route>
+            <Route path="/seoul/tour/pet" element={ <TourPet /> }></Route>
+
+            <Route path="/seoul/db" element={ <InsertDB /> }></Route>
           </Routes>
         </MainLayout>
       </div>
