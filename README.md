@@ -14,3 +14,13 @@
 
 ## 담당 기능
 어린이관련 시설물 데이터를 선정, 수집하여 지도에서 위치와 상세정보를 보여줌.
+
+![1번](https://drive.google.com/file/d/1c8M-f1wRrMGQsydkZM4Pn_gAUUE_F7qp/view?usp=drive_link)
+
+2
+
+![2번](https://drive.google.com/file/d/1ZBBQgmqyCq31DsrI1hW6q1EpMya4BZzb/view?usp=drive_link)
+
+3
+
+![3번](https://drive.google.com/file/d/1MHCrL42uz0KVEu1IgSeyIKr4DMkT1GEa/view?usp=drive_link)
