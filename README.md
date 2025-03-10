@@ -140,7 +140,7 @@
 |특수유아수|students_now_special |int(11) |
 |Y좌표값|y_coordinate |decimal(9,6) |
 |X좌표값|x_coordinate |decimal(9,6)|
-
+[]
 
 ### 서울 열린데이터 광장
 
@@ -150,19 +150,29 @@
 
 |데이터셋 필드명|DB 테이블 필드명|타입|
 |---|---|---|
-
-
-
-
-공시이름: 서울형 키즈카페 시설현황정보
-
-테이블명: kids_cafe
-
-|데이터셋 필드명|DB 테이블 필드명|타입|
-|---|---|---|
-
-
-
+|시설ID|facility_id |varchar(20) |
+|시설명|center_name |varchar(100) |
+|서비스분류명|service_type |varchar(50) |
+|연령구분|age_range |varchar(50) |
+|X좌표값|x_coordinate |decimal(9,6) |
+|Y좌표값|y_coordinate |decimal(9,6) |
+|기본주소|address |varchar(200) |
+|설립일|start_date |varchar(20) |
+|학기시작시간|regular_start_time |int(11) |
+|학기종료시간|regular_end_time |int(11) |
+|방학시작시간|vacation_start_time |int(11) |
+|방학종료시간|vacation_end_time |int(11) |
+|재량휴일시작시간|discretion_start_time |int(11) |
+|재량휴일종료시간|discretion_end_time |int(11) |
+|토요일운영여부|saturday_active |varchar(10) |
+|토요일운영시작시간|saturday_start_time |int(11) |
+|토요일운영종료시간|saturday_end_time |int(11) |
+|월사용료|month_price |int(11) |
+|일사용료|day_price |int(11) |
+|상시돌봄정원수|alltime_max_people |int(11) |
+|일시돌봄정원수|parttime_max_people |int(11) |
+|전용면적(m2)|private_area |double |
+[]
 
 공시이름: 서울시 지역아동센터 시설현황정보
 
@@ -170,5 +180,23 @@
 
 |데이터셋 필드명|DB 테이블 필드명|타입|
 |---|---|---|
+|시설ID|facility_id |varchar(20) |
+|시설명|center_name |varchar(100) |
+|서비스분류|service_type |varchar(50) |
+|연령구분|age_range |varchar(50) |
+|X좌표값|x_coordinate |decimal(9,6) |
+|Y좌표값|y_coordinate |decimal(9,6) |
+|기본주소|address |varchar(200) |
+|연락처|tel |varchar(30) |
+|사용료|price |int(11) |
+|학기시작시간|regular_start_time |int(11) |
+|학기종료시간|regular_end_time |int(11) |
+|방학시작시간|vacation_start_time |int(11) |
+|방학종료시간|vacation_end_time |int(11) |
+|토요일운영여부|saturday_active |varchar(10) |
+|토요일운영시작시간|saturday_start_time |int(11) |
+|토요일운영종료시간|saturday_end_time |int(11)|
+[]
+
 
 
