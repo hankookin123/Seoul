@@ -34,11 +34,11 @@
 
 ## 데이터 셋
 
-### 유치원 알리미 서울시 1차 공시자료
+* ### 유치원 알리미 서울시 1차 공시자료
 
-* 방과후 과정 편성 운영에 관한 사항
+공시항목: 방과후 과정 편성 운영에 관한 사항
 
-kids_after_school
+테이블명: kids_after_school
 
 |데이터셋 필드명|DB 테이블 필드명|타입|
 |---|---|---|
@@ -61,23 +61,114 @@ kids_after_school
 |Y좌표값|y_coordinate|decimal(9,6) |
 |X좌표값|x_coordinate|decimal(9,6)|
 
+[]
 
-통학차량 현황
-kids_car
+공시항목: 통학차량 현황
 
-교실면적 현황
-kids_classroom_area
+테이블명: kids_car
 
-일반 현황
-kids_normal_now
+|데이터셋 필드명|DB 테이블 필드명|타입|
+|---|---|---|
+|교육지원청명|office_education |varchar(100) |
+|유치원명|kindergarten_name |varchar(100) |
+|설립유형|kindergarten_type |varchar(50) |
+|주소|address |varchar(200) |
+|차량운영여부|car_check |varchar(20) |
+|운행차량수|car_active_total_count |int(11) |
+|신고차량수|car_report_total_count |int(11) |
+|9인승신고차량수|car_9 |int(11) |
+|12인승신고차량수|car_12 |int(11) |
+|15인승신고차량수|car_15 |int(11) |
+|Y좌표값|y_coordinate |decimal(9,6) |
+|X좌표값|x_coordinate |decimal(9,6)|
+
+[]
+
+공시항목: 교실면적 현황
+
+테이블명: kids_classroom_area
+
+|데이터셋 필드명|DB 테이블 필드명|타입|
+|---|---|---|
+|교육지원청명|office_education |varchar(100) |
+|유치원명|kindergarten_name |varchar(100) |
+|설립유형|kindergarten_type |varchar(50) |
+|주소|address |varchar(200) |
+|교실수|classroom_count |int(11) |
+|교실면적|area_classroom |int(11) |
+|실내체육장|area_gym |int(11) |
+|보건/위생공간|area_clean |int(11) |
+|조리실/급식공간|area_cook |int(11) |
+|기타공간|area_etc |int(11) |
+|Y좌표값|y_coordinate |decimal(9,6) |
+|X좌표값|x_coordinate |decimal(9,6)|
+
+[]
+
+공시항목: 일반 현황
+
+테이블명: kids_normal_now
+
+|데이터셋 필드명|DB 테이블 필드명|타입|
+|---|---|---|
+|교육지원청명|office_education |varchar(100) |
+|유치원명|kindergarten_name |varchar(100) |
+|설립유형|kindergarten_type |varchar(50) |
+|주소|address |varchar(200) |
+|대표자명|hearder |varchar(50) |
+|원장명|director |varchar(50) |
+|설립일|birth |varchar(10) |
+|개원일|start |varchar(10) |
+|전화번호|tel |varchar(30) |
+|홈페이지|home_page |varchar(100) |
+|운영시간|operating_hours |varchar(100) |
+|만3세학급수|class_count_3 |int(11) |
+|만4세학급수|class_count_4 |int(11) |
+|만5세학급수|class_count_5 |int(11) |
+|혼합학급수|class_count_mix |int(11) |
+|특수학급수|class_count_special |int(11) |
+|인가총정원수|students_max_total |int(11) |
+|3세정원수|students_max_3 |int(11) |
+|4세정원수|students_max_4 |int(11) |
+|5세정원수|students_max_5 |int(11) |
+|혼합모집정원수|students_max_mix |int(11) |
+|특수학급모집정원수|students_max_special |int(11) |
+|만3세유아수|students_now_3 |int(11) |
+|만4세유아수|students_now_4 |int(11) |
+|만5세유아수|students_now_5 |int(11) |
+|혼합유아수|students_now_mix |int(11) |
+|특수유아수|students_now_special |int(11) |
+|Y좌표값|y_coordinate |decimal(9,6) |
+|X좌표값|x_coordinate |decimal(9,6)|
+
 
 ### 서울 열린데이터 광장
 
-서울시 우리동네키움센터 시설현황정보
-kids_bring_center
+공시이름: 서울시 우리동네키움센터 시설현황정보
 
-서울형 키즈카페 시설현황정보
-kids_cafe
+테이블명: kids_bring_center
 
-서울시 지역아동센터 시설현황정보
-kids_local_center
+|데이터셋 필드명|DB 테이블 필드명|타입|
+|---|---|---|
+
+
+
+
+공시이름: 서울형 키즈카페 시설현황정보
+
+테이블명: kids_cafe
+
+|데이터셋 필드명|DB 테이블 필드명|타입|
+|---|---|---|
+
+
+
+
+공시이름: 서울시 지역아동센터 시설현황정보
+
+테이블명: kids_local_center
+
+|데이터셋 필드명|DB 테이블 필드명|타입|
+|---|---|---|
+
+
