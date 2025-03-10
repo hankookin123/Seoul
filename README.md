@@ -29,3 +29,55 @@
 * 공공데이터로는 모든 정보를 알 수 없어 시설물 관리 페이지로 이동하는 편의성을 제공함
 * 데이터 셋에 시설물ID를 이용하여 해당 시설 페이지로 바로 이동
 ![3번](https://github.com/hankookin123/other-resources/blob/main/seoul-img/img03.gif)
+
+
+
+## 데이터 셋
+
+### 유치원 알리미 서울시 1차 공시자료
+
+* 방과후 과정 편성 운영에 관한 사항
+
+kids_after_school
+
+|데이터셋 필드명|DB 테이블 필드명|타입|
+|---|---|---|
+|교육지원청명|office_education|varchar(100) |
+|유치원명|kindergarten_name|varchar(100) |
+|설립유형|kindergarten_type|varchar(50) |
+|주소|address|varchar(200) |
+|운영시작시|start_time|varchar(20) |
+|운영종료시|end_time|varchar(20) |
+|독립편성학급수|class_independent_count|int(11) |
+|오후재편성학급수|class_afternoon_count|int(11) |
+|학급 계|class_total_count|int(11) |
+|독립편성참여원아수|students_independent_count|int(11) |
+|오후재편성참여원아수|students_afternoon_count|int(11) |
+|참여원아 계|students_total_count|int(11) |
+|정규교사수|teacher_regular_count|int(11) |
+|기간제교사수|teacher_temporary_count|int(11) |
+|전담사수|teacher_Dedicated_count|int(11) |
+|강사계|teacher_total_count|int(11) |
+|Y좌표값|y_coordinate|decimal(9,6) |
+|X좌표값|x_coordinate|decimal(9,6)|
+
+
+통학차량 현황
+kids_car
+
+교실면적 현황
+kids_classroom_area
+
+일반 현황
+kids_normal_now
+
+### 서울 열린데이터 광장
+
+서울시 우리동네키움센터 시설현황정보
+kids_bring_center
+
+서울형 키즈카페 시설현황정보
+kids_cafe
+
+서울시 지역아동센터 시설현황정보
+kids_local_center
